@@ -16,4 +16,10 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
     {
         return $this->findBy(['id' => $ids]);
     }
+
+    public function save(Product $product): void
+    {
+        $this->getEntityManager()->persist($product);
+        $this->getEntityManager()->flush();
+    }
 }

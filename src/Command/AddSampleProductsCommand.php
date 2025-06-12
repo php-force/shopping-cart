@@ -2,6 +2,7 @@
 namespace App\Command;
 
 use App\Entity\Product;
+use App\Repository\ProductRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -11,12 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'db:add-products')]
 class AddSampleProductsCommand extends Command
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private ProductRepositoryInterface $productRepository)
     {
         parent::__construct();
-        $this->em = $em;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -31,10 +30,8 @@ class AddSampleProductsCommand extends Command
             $product = new Product();
             $product->setName($data['name']);
             $product->setPrice($data['price']);
-            $this->em->persist($product);
+            $this->productRepository->save($product);
         }
-
-        $this->em->flush();
         $output->writeln('Sample products added successfully!');
 
         return Command::SUCCESS;
