@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block body %}
+    <h1>Your Shopping Cart</h1>
+
+    {% if cart|length > 0 %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price|number_format(2) }}</td>
+                    <td>{{ cart[product.id].quantity }}</td>
+                    <td>{{ (product.price * cart[product.id].quantity)|number_format(2) }}</td>
+                    <td>
+                        <a href="{{ path('cart_remove', {'id': product.id}) }}" class="btn btn-danger">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3">Total:</td>
+                <td>{{ total|number_format(2) }}</td>
+                <td>
+                    <a href="{{ path('cart_clear') }}" class="btn btn-warning">Clear Cart</a>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+
+    <a href="{{ path('home') }}" class="btn btn-primary">Continue Shopping</a>
+{% endblock %}

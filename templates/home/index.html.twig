@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <h1>Products</h1>
+    <a href="{{ path('cart_index') }}" class="btn btn-info">View Cart</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price|number_format(2) }}</td>
+                <td>
+                    <a href="{{ path('cart_add', {'id': product.id}) }}" class="btn btn-success">Add to Cart</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
